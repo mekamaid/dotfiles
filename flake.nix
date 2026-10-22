@@ -1,7 +1,8 @@
 {
-  description = "Tone NixOS system flake";
+  description = "valerie mekamaid's NixOS configuration + dotfiles";
 
   inputs = {
+    # nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home Manager for userspace config
@@ -38,10 +39,16 @@
       ...
     }@inputs:
     let
-      # TODO
-      pkgs = import nixpkgs {
+      pkgsLinux = import nixpkgs {
         system = "x86_64-linux";
-        # system = "aarch64-darwin";
+        config.allowUnfree = true;
+        overlays = [
+          nix-vscode-extensions.overlays.default
+        ];
+      };
+
+      pkgsDarwin = import nixpkgs {
+        system = "aarch64-darwin";
         config.allowUnfree = true;
         overlays = [
           nix-vscode-extensions.overlays.default
@@ -54,20 +61,19 @@
     in
     {
       # TODO
-      packages."x86_64-linux".helium = pkgs.callPackage ./pkgs/helium.nix { };
+      packages."x86_64-linux".helium = pkgsLinux.callPackage ./pkgs/helium.nix { };
 
       nixosConfigurations = {
         tone = nixpkgs.lib.nixosSystem {
-          inherit pkgs;
-
           system = "x86_64-linux";
+          pkgs = pkgsLinux;
           specialArgs = { inherit inputs; };
 
           modules = [
             ./hosts/tone/configuration.nix
             ./modules/nixos/nvidia.nix
             ./modules/nixos/razer.nix
-            ./modules/nixos/kde-plasma.nix
+            ./modules/nixos/niri.nix
 
             home-manager.nixosModules.home-manager
             {
@@ -76,13 +82,13 @@
                 useUserPackages = true;
                 extraSpecialArgs = { inherit inputs; };
                 backupFileExtension = "home-manager-backup";
-                users.alex = import ./hosts/tone/home.nix;
+                users.maid = import ./hosts/tone/home.nix;
               };
             }
 
             # TODO
             {
-              environment.systemPackages = with pkgs; [
+              environment.systemPackages = with pkgsLinux; [
                 self.packages.${system}.helium
               ];
             }
@@ -94,9 +100,8 @@
 
       darwinConfigurations = {
         northstar = nix-darwin.lib.darwinSystem {
-          inherit pkgs;
-
           system = "aarch64-darwin";
+          pkgs = pkgsDarwin;
           specialArgs = { inherit inputs; };
 
           modules = [

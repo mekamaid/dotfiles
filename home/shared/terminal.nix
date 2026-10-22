@@ -47,26 +47,22 @@ in
       settings = lib.importTOML ./../../config/starship/starship-config.toml;
     };
 
-    # TODO switch to kitty
-    kitty = {
-      enable = true;
-    };
-
     ghostty = {
       enable = true;
       # Use ghostty-bin on darwin since ghostty is not available
-      package = lib.mkIf stdenv.isDarwin pkgs.ghostty-bin;
+      package = lib.mkIf stdenv.hostPlatform.isDarwin pkgs.ghostty-bin;
 
       # Enable systemd user service on Linux
-      systemd.enable = lib.mkIf stdenv.isLinux true;
+      systemd.enable = lib.mkIf stdenv.hostPlatform.isLinux true;
       enableZshIntegration = true;
       settings = {
-        window-width = 120;
-        window-height = 35;
+        window-width = lib.mkIf stdenv.hostPlatform.isDarwin 120;
+        window-height = lib.mkIf stdenv.hostPlatform.isDarwin 35;
+        window-decoration = if stdenv.hostPlatform.isLinux then "none" else "auto";
         window-padding-color = "background";
 
         font-family = "Google Sans Code";
-        font-size = if stdenv.isDarwin then 14 else 12;
+        font-size = if stdenv.hostPlatform.isDarwin then 14 else 12;
         font-feature = "-liga, -calt, -dlig";
 
         theme = "Vesper";

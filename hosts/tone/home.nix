@@ -3,7 +3,7 @@
   lib,
   ...
 }:
-# TODO add systemd service for tartarus-pro-joystick-util
+
 {
   imports = [
     ../../home/shared
@@ -11,8 +11,13 @@
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "alex";
-  home.homeDirectory = "/home/alex";
+  home.username = "maid";
+  home.homeDirectory = "/home/maid";
+
+  # GTK dark mode
+  dconf.settings = {
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+  };
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
@@ -39,8 +44,10 @@
     nix-output-monitor
     nix-init
     nvtopPackages.nvidia
+    networkmanagerapplet
 
     # desktop apps
+    kdePackages.dolphin
     ungoogled-chromium
     discord
     signal-desktop
@@ -126,6 +133,36 @@
   };
 
   programs.mpv = {
+    enable = true;
+  };
+
+  services.arrpc = {
+    enable = true;
+  };
+
+  programs.fuzzel.enable = true;
+
+  # wayland.windowManager.niri = {
+  #   enable = true;
+  #   enableDefaultConfig = true;
+  # };
+
+  programs.waybar = {
+    enable = true;
+  };
+
+  wayland.windowManager.niri = {
+    enable = true;
+    checkConfig = true;
+  };
+
+  xdg.configFile."niri/config.kdl".source = ../../config/niri/config.kdl;
+
+  programs.swaylock = {
+    enable = true;
+  };
+
+  services.dunst = {
     enable = true;
   };
 }

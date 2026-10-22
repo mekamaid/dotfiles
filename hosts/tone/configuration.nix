@@ -6,6 +6,7 @@
   pkgs,
   ...
 }:
+
 {
   imports = [
     # Include the results of the hardware scan.
@@ -23,7 +24,11 @@
 
   environment = {
     # Autocompletion for system packages, see https://home-manager-options.extranix.com/?query=zsh.enablecompletion&release=master
-    pathsToLink = [ "/share/zsh" ];
+    pathsToLink = [
+      "/share/zsh"
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
 
     etc = {
       # lm_sensors config
@@ -49,6 +54,7 @@
       # };
     };
   };
+
   boot.kernelModules = [
     # Kernel modules for sensors/controls on ASUS ROG Strix B550-I motherboard
     "jc24"
@@ -120,9 +126,9 @@
   users.defaultUserShell = pkgs.zsh;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.alex = {
+  users.users.maid = {
     isNormalUser = true;
-    description = "alex";
+    description = "maid";
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -152,6 +158,7 @@
 
     gamemode.enable = true;
 
+    # TODO add coolercontrol config to repo
     coolercontrol.enable = true;
 
     _1password.enable = true;
@@ -159,14 +166,18 @@
       enable = true;
       # Certain features, including CLI integration and system authentication support,
       # require enabling PolKit integration on some desktop environments (e.g. Plasma).
-      polkitPolicyOwners = [ "alex" ];
+      polkitPolicyOwners = [ "maid" ];
     };
   };
 
   security.polkit.enable = true;
+  security.pam.services.swaylock = { };
 
   # Experimental features
-  nix.settings.experimental-features = "nix-command flakes";
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

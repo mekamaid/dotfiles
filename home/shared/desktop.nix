@@ -19,7 +19,7 @@ in
         tray = true;
         minimizeToTray = true;
         arRPC = true;
-        customTitleBar = mkIf stdenv.isLinux true;
+        customTitleBar = mkIf stdenv.hostPlatform.isLinux true;
       };
 
       vencord.settings = {

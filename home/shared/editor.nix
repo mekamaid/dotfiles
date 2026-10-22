@@ -15,19 +15,19 @@ in
           "editor.fontFamily" = "0xProto Nerd Font";
           "terminal.integrated.fontFamily" = "Monaco";
           "editor.formatOnSave" = true;
-          "editor.minimap.enabled" = false;
+          "editor.minimap.enabled" = true;
           "chat.disableAIFeatures" = true;
           "terminal.integrated.initialHint" = false;
         };
 
         keybindings = [
           {
-            "key" = if stdenv.isDarwin then "cmd+[Backslash]" else "ctrl+[Backslash]";
+            "key" = if stdenv.hostPlatform.isDarwin then "cmd+[Backslash]" else "ctrl+[Backslash]";
             "command" = "editor.action.commentLine";
             "when" = "editorTextFocus && !editorReadonly";
           }
           {
-            "key" = if stdenv.isDarwin then "shift+cmd+7" else "shift+ctrl+7";
+            "key" = if stdenv.hostPlatform.isDarwin then "shift+cmd+7" else "shift+ctrl+7";
             "command" = "-editor.action.commentLine";
             "when" = "editorTextFocus && !editorReadonly";
           }
@@ -43,6 +43,7 @@ in
           ms-python.python
           jnoortheen.nix-ide
           tamasfe.even-better-toml
+          kdl-org.kdl
 
           # Utilities
           esbenp.prettier-vscode
