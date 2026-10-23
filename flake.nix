@@ -1,9 +1,21 @@
 {
-  description = "valerie mekamaid's NixOS configuration + dotfiles";
+  description = "valerie mekamaid's nix flake";
 
   inputs = {
     # nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
+
+    # flake-parts for flake structure
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+    };
+
+    # import-tree for easier module imports
+    import-tree = {
+      url = "github:denful/import-tree";
+    };
 
     # Home Manager for userspace config
     home-manager = {
@@ -18,124 +30,26 @@
     };
 
     # nix-homebrew for managing homebrew installations on macOS
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew = {
+      url = "github:zhaofengli/nix-homebrew";
+    };
 
     # mac-app-util for Nix apps on macOS
-    mac-app-util.url = "github:hraban/mac-app-util";
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+    };
 
     # nixpkgs overlay for VSCode extensions
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+    };
+
+    # Nix packaging for Helium browser while the nixpkgs one is WIP
+    helium = {
+      url = "github:schembriaiden/helium-browser-nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      nix-darwin,
-      nix-homebrew,
-      mac-app-util,
-      nix-vscode-extensions,
-      ...
-    }@inputs:
-    let
-      pkgsLinux = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-        overlays = [
-          nix-vscode-extensions.overlays.default
-        ];
-      };
-
-      pkgsDarwin = import nixpkgs {
-        system = "aarch64-darwin";
-        config.allowUnfree = true;
-        overlays = [
-          nix-vscode-extensions.overlays.default
-        ];
-      };
-
-      configRevision = {
-        system.configurationRevision = self.rev or self.dirtyRev or null;
-      };
-    in
-    {
-      # TODO
-      packages."x86_64-linux".helium = pkgsLinux.callPackage ./pkgs/helium.nix { };
-
-      nixosConfigurations = {
-        tone = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          pkgs = pkgsLinux;
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./hosts/tone/configuration.nix
-            ./modules/nixos/nvidia.nix
-            ./modules/nixos/razer.nix
-            ./modules/nixos/niri.nix
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; };
-                backupFileExtension = "home-manager-backup";
-                users.maid = import ./hosts/tone/home.nix;
-              };
-            }
-
-            # TODO
-            {
-              environment.systemPackages = with pkgsLinux; [
-                self.packages.${system}.helium
-              ];
-            }
-
-            configRevision
-          ];
-        };
-      };
-
-      darwinConfigurations = {
-        northstar = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          pkgs = pkgsDarwin;
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./hosts/northstar/configuration.nix
-
-            nix-homebrew.darwinModules.nix-homebrew
-            {
-              nix-homebrew = {
-                enable = true;
-                enableRosetta = true;
-                user = "alex";
-                autoMigrate = true;
-              };
-            }
-
-            home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; };
-                backupFileExtension = "home-manager-backup";
-                users.alex = import ./hosts/northstar/home.nix;
-                sharedModules = [
-                  mac-app-util.homeManagerModules.default
-                ];
-              };
-            }
-
-            mac-app-util.darwinModules.default
-
-            configRevision
-          ];
-        };
-      };
-    };
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

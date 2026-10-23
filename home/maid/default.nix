@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ../../home/shared
+    ../shared
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -47,6 +47,7 @@
     networkmanagerapplet
 
     # desktop apps
+    helium
     kdePackages.dolphin
     ungoogled-chromium
     discord
