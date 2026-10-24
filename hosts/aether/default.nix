@@ -24,8 +24,13 @@ in
 
     modules = [
       self.nixosModules.aether-config
+      self.nixosModules.aether-hardware-config
       self.nixosModules.nvidia
+      self.nixosModules.pulsar
       self.nixosModules.niri
+      self.nixosModules.coolercontrol
+      self.nixosModules.steam
+      self.nixosModules._1password
       self.nixosModules.fonts
       inputs.home-manager.nixosModules.home-manager
       {
