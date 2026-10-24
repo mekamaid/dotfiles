@@ -139,10 +139,6 @@
     enable = true;
   };
 
-  programs.fastfetch = {
-    enable = true;
-  };
-
   programs.obsidian = {
     enable = true;
   };
