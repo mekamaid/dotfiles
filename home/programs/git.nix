@@ -24,6 +24,7 @@
       signByDefault = true;
     };
 
+    # TODO find a way to add .gitconfig_uni to config as a secret
     includes = [
       {
         condition = "gitdir:~/dev/uni/";

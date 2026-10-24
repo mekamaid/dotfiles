@@ -34,7 +34,7 @@ in
           useUserPackages = true;
           extraSpecialArgs = { inherit inputs; };
           backupFileExtension = "home-manager-backup";
-          users.maid = import ../../../home/maid;
+          users.maid = import ../../home/maid;
         };
       }
       configRevision
