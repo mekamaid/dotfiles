@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.tone-hardware-configuration =
+  flake.nixosModules.aether-hardware-configuration =
     {
       config,
       lib,

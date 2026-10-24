@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.tone-config =
+  flake.nixosModules.aether-config =
     {
       lib,
       pkgs,
@@ -9,7 +9,7 @@
 
     {
       imports = [
-        self.nixosModules.tone-hardware-configuration
+        self.nixosModules.aether-hardware-configuration
       ];
 
       # Kernel
@@ -32,7 +32,7 @@
 
       # Networking
       networking = {
-        hostName = "tone";
+        hostName = "aether";
         networkmanager.enable = true;
       };
 

@@ -8,7 +8,7 @@ let
   };
 in
 {
-  flake.nixosConfigurations.tone = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.aether = inputs.nixpkgs.lib.nixosSystem {
     system = system;
 
     pkgs = import inputs.nixpkgs {
@@ -23,7 +23,7 @@ in
     specialArgs = { inherit inputs; };
 
     modules = [
-      self.nixosModules.tone-config
+      self.nixosModules.aether-config
       self.nixosModules.nvidia
       self.nixosModules.niri
       self.nixosModules.fonts
