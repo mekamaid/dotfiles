@@ -26,6 +26,7 @@ in
       self.nixosModules.aether-config
       self.nixosModules.aether-hardware-config
       self.nixosModules.nvidia
+      self.nixosModules.monitor
       self.nixosModules.pulsar
       self.nixosModules.niri
       self.nixosModules.coolercontrol
