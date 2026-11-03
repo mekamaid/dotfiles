@@ -26,13 +26,14 @@ in
       self.nixosModules.aether-config
       self.nixosModules.aether-hardware-config
       self.nixosModules.nvidia
+      self.nixosModules.hid
       self.nixosModules.monitor
-      self.nixosModules.pulsar
       self.nixosModules.desktop
+      self.nixosModules.gaming
       self.nixosModules.coolercontrol
-      self.nixosModules.steam
       self.nixosModules._1password
       self.nixosModules.fonts
+
       inputs.home-manager.nixosModules.home-manager
       {
         home-manager = {
@@ -43,6 +44,7 @@ in
           users.maid = import ../../home/maid;
         };
       }
+
       configRevision
     ];
   };

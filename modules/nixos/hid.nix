@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.pulsar =
+  flake.nixosModules.hid =
     { ... }:
 
     {

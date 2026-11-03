@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.steam =
+  flake.nixosModules.gaming =
     { pkgs, ... }:
 
     {
