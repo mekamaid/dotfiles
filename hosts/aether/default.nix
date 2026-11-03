@@ -28,7 +28,7 @@ in
       self.nixosModules.nvidia
       self.nixosModules.monitor
       self.nixosModules.pulsar
-      self.nixosModules.niri
+      self.nixosModules.desktop
       self.nixosModules.coolercontrol
       self.nixosModules.steam
       self.nixosModules._1password

@@ -157,21 +157,9 @@
 
   programs.fuzzel.enable = true;
 
-  # wayland.windowManager.niri = {
-  #   enable = true;
-  #   enableDefaultConfig = true;
-  # };
-
   programs.waybar = {
     enable = true;
   };
-
-  wayland.windowManager.niri = {
-    enable = true;
-    checkConfig = true;
-  };
-
-  xdg.configFile."niri/config.kdl".source = ../../config/niri/config.kdl;
 
   programs.swaylock = {
     enable = true;

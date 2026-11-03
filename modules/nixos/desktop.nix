@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.niri =
+  flake.nixosModules.desktop =
     { pkgs, ... }:
 
     {
@@ -13,11 +13,6 @@
       };
 
       services.displayManager = {
-        # sddm = {
-        #   enable = true;
-        #   wayland.enable = true;
-        # };
-
         ly.enable = true;
 
         sessionPackages = [
@@ -25,13 +20,8 @@
         ];
       };
 
-      programs.niri = {
-        enable = true;
-        package = pkgs.niri;
-      };
+      programs.niri.enable = true;
 
-      programs.xwayland = {
-        enable = true;
-      };
+      programs.xwayland.enable = true;
     };
 }
