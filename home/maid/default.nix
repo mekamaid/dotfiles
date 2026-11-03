@@ -10,34 +10,23 @@
     (inputs.import-tree [ ../programs ])
   ];
 
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See
-  # the Home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "25.05";
+  # User
+  home = {
+    username = "maid";
+    homeDirectory = "/home/maid";
+  };
 
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = "maid";
-  home.homeDirectory = "/home/maid";
-
+  # Environment variables
   home.sessionVariables = {
     EDITOR = "nano";
   };
 
   # GTK dark mode
-  dconf.settings = {
+  dconf.settings = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  # Packages that should be installed to the user profile.
+  # Packages
   home.packages = with pkgs; [
     # dev stuff
     libgccjit
@@ -45,10 +34,9 @@
     jdk25
     python3
     nixfmt
-    alejandra
     sqlite
 
-    # commandline utilities
+    # cmdline utilities
     nano
     tree
     ani-cli
@@ -67,7 +55,6 @@
     # desktop apps
     helium
     kdePackages.dolphin
-    ungoogled-chromium
     discord
     signal-desktop
     cider-2
@@ -77,95 +64,49 @@
     pavucontrol
 
     # games
-    mangohud
     xivlauncher
     prismlauncher
     heroic
+    mangohud
     protonplus
   ];
 
-  # TODO configure default values
-  programs.ssh = {
-    enable = true;
-
-    matchBlocks."*" = {
-      identityAgent = "~/.1password/agent.sock";
-    };
+  # Programs
+  programs = {
+    tmux.enable = true;
+    lf.enable = true;
+    yazi.enable = true;
+    fzf.enable = true;
+    aria2.enable = true;
+    bat.enable = true;
+    btop.enable = true;
+    gpg.enable = true;
+    grep.enable = true;
+    ripgrep.enable = true;
+    obsidian.enable = true;
+    obs-studio.enable = true;
+    mpv.enable = true;
+    fuzzel.enable = true;
+    waybar.enable = true;
+    swaylock.enable = true;
   };
 
-  programs.lazygit = {
-    enable = true;
-
-    enableZshIntegration = true;
+  # Services
+  services = {
+    dunst.enable = true;
+    arrpc.enable = true;
   };
 
-  programs.tmux = {
-    enable = true;
-  };
+  # Enable Home Manager
+  programs.home-manager.enable = true;
 
-  programs.lf = {
-    enable = true;
-  };
-
-  programs.yazi = {
-    enable = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-  };
-
-  programs.aria2 = {
-    enable = true;
-  };
-
-  programs.bat = {
-    enable = true;
-  };
-
-  programs.btop = {
-    enable = true;
-  };
-
-  programs.gpg = {
-    enable = true;
-  };
-
-  programs.grep = {
-    enable = true;
-  };
-
-  programs.ripgrep = {
-    enable = true;
-  };
-
-  programs.obsidian = {
-    enable = true;
-  };
-
-  programs.obs-studio = {
-    enable = true;
-  };
-
-  programs.mpv = {
-    enable = true;
-  };
-
-  services.arrpc = {
-    enable = true;
-  };
-
-  programs.fuzzel.enable = true;
-
-  programs.waybar = {
-    enable = true;
-  };
-
-  programs.swaylock = {
-    enable = true;
-  };
-
-  services.dunst = {
-    enable = true;
-  };
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
+  #
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "25.05";
 }
