@@ -349,6 +349,16 @@ window-rule {
     open-floating true
 }
 
+// Open Chromium picture-in-picture extension as floating
+window-rule {
+    match title="(?i)picture.in.picture"
+    open-floating true
+    open-focused false
+    default-column-width { fixed 480; }
+    default-window-height { fixed 270; }
+    default-floating-position x=35 y=20 relative-to="bottom-right"
+}
+
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
 /-window-rule {
