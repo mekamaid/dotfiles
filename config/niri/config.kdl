@@ -359,6 +359,11 @@ window-rule {
     default-floating-position x=35 y=20 relative-to="bottom-right"
 }
 
+// Open Steam friends list as floating
+window-rule {
+    match app-id="steam" title="Friends List"
+    open-floating true
+}
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
 /-window-rule {
