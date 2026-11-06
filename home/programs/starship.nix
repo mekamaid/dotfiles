@@ -6,6 +6,6 @@
     enable = true;
 
     enableZshIntegration = true;
-    settings = lib.importTOML ./../../config/starship/starship-config.toml;
+    settings = lib.importTOML ./../../etc/config/starship/starship-config.toml;
   };
 }
